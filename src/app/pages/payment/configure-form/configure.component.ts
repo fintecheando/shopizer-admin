@@ -7,6 +7,7 @@ let moneyorder = require('../services/moneyorder.json');
 let paypalData = require('../services/paypal.json');
 let beanStreamData = require('../services/beanstream.json');
 let stripeData = require('../services/stripe.json');
+let codiData = require('../services/codi.json');
 let braintreeData = require('../services/braintree.json');
 import { PaymentService } from '../services/payment.service';
 @Component({
@@ -63,6 +64,9 @@ export class ConfigureComponent implements OnInit {
     } else if (paymenttype == 'stripe') {
       this.formData = stripeData;
       this.paymentType = "Stripe";
+    } else if (paymenttype == 'codi') {
+      this.formData = codiData;
+      this.paymentType = "Codi";
     } else if (paymenttype == 'braintree') {
       this.formData = braintreeData;
       this.paymentType = "Braintree";
@@ -113,6 +117,8 @@ export class ConfigureComponent implements OnInit {
     let body: any = {};
     if (paymenttype == "stripe") {
       body = { 'code': paymenttype, 'active': param.active, 'defaultSelected': param.defaultSelected, 'integrationKeys': { 'publishableKey': param.publishableKey, 'secretKey': param.secretKey, 'transaction': param.transaction }, 'integrationOptions': null }
+    } else if (paymenttype == 'codi') {
+      body = { 'code': paymenttype, 'active': param.active, 'defaultSelected': param.defaultSelected, 'integrationKeys': { 'publishableKey': param.publishableKey, 'secretKey': param.secretKey, 'transaction': param.transaction }, 'integrationOptions': null }
     } else if (paymenttype == 'moneyorder') {
       body = { 'code': paymenttype, 'active': param.active, 'defaultSelected': param.defaultSelected, 'integrationKeys': { 'address': param.address }, 'integrationOptions': null }
     } else if (paymenttype == 'paypal-express-checkout') {
@@ -127,7 +133,7 @@ export class ConfigureComponent implements OnInit {
   savePayment(param) {
     this.paymentService.savePayment(param)
       .subscribe(data => {
-        // console.log(data);
+        console.log(data);
         this.loadingList = false;
         this.toastr.success('Payment data has been configured successfully.');
         // this.goToback()
