@@ -1,6 +1,5 @@
-
 # build env
-FROM node:12.8.0 as builder
+FROM node:14 as builder
 
 WORKDIR /app
 
